@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:background="#FAFAFA">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/img_poster_series"
+        android:layout_width="80dp"
+        android:layout_height="110dp"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        app:riv_corner_radius="12dp"
+        android:src="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_item_title_series"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/prompt_bold"
+        android:textColor="#4A4A4A"
+        android:textSize="14sp"
+        tools:text="@string/title"
+        app:layout_constraintStart_toEndOf="@id/img_poster_series"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RatingBar
+        android:id="@+id/rating_bar_series"
+        android:theme="@style/RatingBar"
+        style="?android:attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginBottom="10dp"
+        android:scaleX="1.2"
+        android:scaleY="1.2"
+        android:transformPivotX="0dp"
+        android:transformPivotY="0dp"
+        android:isIndicator="true"
+        android:numStars="5"
+        app:layout_constraintStart_toEndOf="@id/img_poster_series"
+        app:layout_constraintTop_toBottomOf="@id/tv_item_title_series"
+        app:layout_constraintBottom_toTopOf="@id/tv_item_genre_series"/>
+
+    <TextView
+        android:id="@+id/tv_item_rating_series"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="5dp"
+        android:fontFamily="@font/prompt_regular"
+        android:textColor="#6B6B6B"
+        android:textSize="12sp"
+        tools:text="@string/rating_number"
+        app:layout_constraintStart_toEndOf="@id/rating_bar_series"
+        app:layout_constraintTop_toBottomOf="@id/tv_item_title_series"
+        app:layout_constraintBottom_toTopOf="@id/tv_item_genre_series"/>
+
+    <TextView
+        android:id="@+id/tv_item_genre_series"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/prompt_regular"
+        android:textColor="#6B6B6B"
+        android:textSize="12sp"
+        tools:text="@string/genre"
+        app:layout_constraintStart_toEndOf="@id/img_poster_series"
+        app:layout_constraintTop_toBottomOf="@id/rating_bar_series"
+        app:layout_constraintBottom_toTopOf="@id/tv_item_episode"/>
+
+    <TextView
+        android:id="@+id/tv_item_episode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/prompt_regular"
+        android:textColor="#6B6B6B"
+        android:textSize="12sp"
+        android:text="@string/episode"
+        app:layout_constraintStart_toEndOf="@id/img_poster_series"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_item_episode_number_series"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/prompt_regular"
+        android:textColor="#6B6B6B"
+        android:textSize="12sp"
+        tools:text="@string/episode_number"
+        app:layout_constraintStart_toEndOf="@id/tv_item_episode"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

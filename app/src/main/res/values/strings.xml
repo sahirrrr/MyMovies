@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">MyMovies</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tab_text_1">Film</string>
+    <string name="tab_text_2">Series</string>
+    <string name="tab_text_3">My List</string>
+    <string name="movie_fragment">ini movie fragment</string>
+    <string name="mylist_fragment">ini mylist fragment</string>
+    <string name="tvseries_fragment">ini tvseries fragment</string>
+    <string name="movie_icon">Movie Icon</string>
+    <string name="movies">Movies</string>
+    <string name="title">Title</string>
+    <string name="genre">genre</string>
+    <string name="duration">duration</string>
+    <string name="rating_number">5.0</string>
+    <string name="episode">Episode:</string>
+    <string name="episode_number">12</string>
+    <string name="poster">Poster</string>
+    <string name="Synopsis">Synopsis</string>
+    <string name="description">lorem ipsum</string>
+    <string name="purchase">Purchase</string>
+    <string name="icon_back">Icon back</string>
+    <string name="icon_bookmark">icon bookmark</string>
+    <string name="logo">logo</string>
+    <string name="empty_state_title">Your list is empty</string>
+    <string name="empty_state_desc">Please bookmark some movies</string>
+</resources>
