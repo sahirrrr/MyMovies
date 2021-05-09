@@ -6,16 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.mymovies.databinding.FragmentFilmBinding
 import com.dicoding.mymovies.ui.detail.DetailFilmActivity
+import com.dicoding.mymovies.ui.film.adapter.PopularFilmAdapter
+import com.dicoding.mymovies.ui.film.adapter.UpcomingFilmAdapter
+import com.dicoding.mymovies.viewmodel.ViewModelFactory
 
 
 class FilmFragment : Fragment() {
 
     private lateinit var binding: FragmentFilmBinding
-    private val viewModel:FilmViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentFilmBinding.inflate(layoutInflater, container, false)
@@ -25,13 +27,44 @@ class FilmFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
-            val film = viewModel.getFilm()
+            val factory = ViewModelFactory.getInstance(requireActivity())
+            val viewModel = ViewModelProvider(this, factory)[FilmViewModel::class.java]
 
-            val filmAdapter = FilmAdapter()
-            filmAdapter.setMovies(film)
+            //Upcoming Movies
+            val upcomingFilmAdapter = UpcomingFilmAdapter()
+
+            binding.progressBar.visibility = View.VISIBLE
+            viewModel.getUpcomingFilm().observe(viewLifecycleOwner, { upcomingFilm ->
+                binding.progressBar.visibility = View.GONE
+                upcomingFilmAdapter.setMovies(upcomingFilm)
+                upcomingFilmAdapter.notifyDataSetChanged()
+            })
+
+            with(binding.rvUpcomingFilm) {
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                setHasFixedSize(true)
+                adapter = upcomingFilmAdapter
+            }
+
+            upcomingFilmAdapter.onClickItem = {
+                val intent = Intent(activity, DetailFilmActivity::class.java)
+                intent.putExtra(DetailFilmActivity.EXTRA_FILM, it)
+                startActivity(intent)
+            }
+
+
+            // Popular Movies
+            val filmAdapter = PopularFilmAdapter()
+
+            binding.progressBar.visibility = View.VISIBLE
+            viewModel.getFilm().observe(viewLifecycleOwner, { film ->
+                binding.progressBar.visibility = View.GONE
+                filmAdapter.setMovies(film)
+                filmAdapter.notifyDataSetChanged()
+            })
 
             with(binding.rvFilm) {
-                layoutManager = LinearLayoutManager(context)
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 setHasFixedSize(true)
                 adapter = filmAdapter
             }

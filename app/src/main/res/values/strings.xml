@@ -24,4 +24,8 @@
     <string name="logo">logo</string>
     <string name="empty_state_title">Your list is empty</string>
     <string name="empty_state_desc">Please bookmark some movies</string>
+    <string name="release_date">Release Date</string>
+    <string name="vote">Vote</string>
+    <string name="popular_movies">Popular Movies</string>
+    <string name="upcoming_movies">Upcoming Movies</string>
 </resources>

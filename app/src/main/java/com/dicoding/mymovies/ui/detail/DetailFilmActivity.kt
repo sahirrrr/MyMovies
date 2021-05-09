@@ -4,10 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.dicoding.mymovies.R
-import com.dicoding.mymovies.data.FilmEntity
+import com.dicoding.mymovies.data.source.local.entity.PopularFilmEntity
 import com.dicoding.mymovies.databinding.ActivityDetailFilmBinding
 
 class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
@@ -17,26 +15,17 @@ class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private lateinit var binding: ActivityDetailFilmBinding
-    private var filmEntity: FilmEntity? = null
+    private var popularFilmEntity: PopularFilmEntity? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailFilmBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        filmEntity = intent.getParcelableExtra(EXTRA_FILM)
-        if (filmEntity != null) {
+        popularFilmEntity = intent.getParcelableExtra(EXTRA_FILM)
+        if (popularFilmEntity != null) {
             with(binding) {
-                tvItemTitleFilm.text = filmEntity?.title
-                tvItemDescriptionFilm.text = filmEntity?.description
-                tvItemGenreFilm.text = filmEntity?.genre
-                tvItemDurationFilm.text = filmEntity?.duration
-                ratingBarFilm.rating = filmEntity?.rating!!
-                tvItemRatingFilm.text = filmEntity?.rating.toString()
-                Glide.with(applicationContext)
-                        .load(filmEntity?.imagePath)
-                        .apply(RequestOptions())
-                        .into(imgPosterFilm)
+                tvItemTitleFilm.text = popularFilmEntity?.title
             }
         }
 

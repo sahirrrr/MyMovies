@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         val sectionsPagerAdapter = SectionsPagerAdapter(this)
         val viewPager = binding.viewPager
         viewPager.adapter = sectionsPagerAdapter
+        viewPager.isUserInputEnabled = false
 
         val tabs = binding.tabs
         TabLayoutMediator(tabs, viewPager) {tab, position ->

@@ -7,7 +7,7 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.dicoding.mymovies.R
-import com.dicoding.mymovies.data.SeriesEntity
+import com.dicoding.mymovies.data.source.local.entity.SeriesEntity
 import com.dicoding.mymovies.databinding.ActivityDetailSeriesBinding
 
 class DetailSeriesActivity : AppCompatActivity(), View.OnClickListener {

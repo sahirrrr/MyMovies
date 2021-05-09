@@ -1,4 +1,4 @@
-package com.dicoding.mymovies.data
+package com.dicoding.mymovies.data.source.local.entity
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

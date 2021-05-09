@@ -24,22 +24,22 @@ class SeriesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
-            val series = viewModel.getSeries()
-
-            val seriesAdapter = SeriesAdapter()
-            seriesAdapter.setSeries(series)
-
-            with(binding.rvSeries) {
-                layoutManager = LinearLayoutManager(context)
-                setHasFixedSize(true)
-                adapter = seriesAdapter
-            }
-
-            seriesAdapter.onClickItem = {
-                val intent = Intent(activity, DetailSeriesActivity::class.java)
-                intent.putExtra(DetailSeriesActivity.EXTRA_SERIES, it)
-                startActivity(intent)
-            }
+//            val series = viewModel.getSeries()
+//
+//            val seriesAdapter = SeriesAdapter()
+//            seriesAdapter.setSeries(series)
+//
+//            with(binding.rvSeries) {
+//                layoutManager = LinearLayoutManager(context)
+//                setHasFixedSize(true)
+//                adapter = seriesAdapter
+//            }
+//
+//            seriesAdapter.onClickItem = {
+//                val intent = Intent(activity, DetailSeriesActivity::class.java)
+//                intent.putExtra(DetailSeriesActivity.EXTRA_SERIES, it)
+//                startActivity(intent)
+//            }
         }
     }
 }

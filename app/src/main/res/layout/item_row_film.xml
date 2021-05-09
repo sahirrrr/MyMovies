@@ -4,91 +4,59 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_container"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="16dp"
     android:background="#FAFAFA">
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/img_poster_film"
-        android:layout_width="80dp"
-        android:layout_height="110dp"
+        android:layout_width="173dp"
+        android:layout_height="223dp"
         android:scaleType="fitXY"
         android:adjustViewBounds="true"
         app:riv_corner_radius="12dp"
         android:src="@color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_item_title_film"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:maxLines="2"
         android:fontFamily="@font/prompt_bold"
         android:textColor="#4A4A4A"
         android:textSize="14sp"
         tools:text="@string/title"
-        app:layout_constraintStart_toEndOf="@id/img_poster_film"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <RatingBar
-        android:id="@+id/rating_bar_film"
-        android:theme="@style/RatingBar"
-        style="?android:attr/ratingBarStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="14dp"
-        android:layout_marginBottom="10dp"
-        android:scaleX="1.2"
-        android:scaleY="1.2"
-        android:transformPivotX="0dp"
-        android:transformPivotY="0dp"
-        android:isIndicator="true"
-        android:numStars="5"
-        app:layout_constraintStart_toEndOf="@id/img_poster_film"
-        app:layout_constraintTop_toBottomOf="@id/tv_item_title_film"
-        app:layout_constraintBottom_toTopOf="@id/tv_item_genre_film"/>
+        app:layout_constraintTop_toBottomOf="@id/img_poster_film"
+        app:layout_constraintBottom_toTopOf="@id/tv_item_release_date_film"
+        app:layout_constraintEnd_toEndOf="@id/img_poster_film"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/tv_item_rating_film"
+        android:id="@+id/tv_item_release_date_film"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/prompt_regular"
         android:textColor="#6B6B6B"
         android:textSize="12sp"
-        tools:text="@string/rating_number"
-        app:layout_constraintStart_toEndOf="@id/rating_bar_film"
-        app:layout_constraintTop_toBottomOf="@id/tv_item_title_film"
-        app:layout_constraintBottom_toTopOf="@id/tv_item_genre_film"/>
+        tools:text="@string/release_date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_item_title_film" />
 
     <TextView
-        android:id="@+id/tv_item_genre_film"
+        android:id="@+id/tv_item_vote_film"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/prompt_regular"
         android:textColor="#6B6B6B"
         android:textSize="12sp"
-        tools:text="@string/genre"
-        app:layout_constraintStart_toEndOf="@id/img_poster_film"
-        app:layout_constraintTop_toBottomOf="@id/rating_bar_film"
-        app:layout_constraintBottom_toTopOf="@id/tv_item_duration_film"/>
-
-    <TextView
-        android:id="@+id/tv_item_duration_film"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:fontFamily="@font/prompt_regular"
-        android:textColor="#6B6B6B"
-        android:textSize="12sp"
-        tools:text="@string/duration"
-        app:layout_constraintStart_toEndOf="@id/img_poster_film"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        tools:text="@string/vote"
+        app:layout_constraintEnd_toEndOf="@id/img_poster_film"
+        app:layout_constraintTop_toBottomOf="@id/tv_item_title_film"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
