@@ -48,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="350dp"
         android:background="#FAFAFA"
-        tools:listitem="@layout/item_row_film"
+        tools:listitem="@layout/item_row_popular_film"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_popular_film"/>
 

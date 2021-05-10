@@ -5,7 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.dicoding.mymovies.data.source.MoviesRepository
 import com.dicoding.mymovies.di.Injection
+import com.dicoding.mymovies.ui.detail.DetailViewModel
 import com.dicoding.mymovies.ui.film.FilmViewModel
+import com.dicoding.mymovies.ui.series.SeriesViewModel
 
 class ViewModelFactory private constructor(private val mMoviesRepository: MoviesRepository): ViewModelProvider.NewInstanceFactory() {
 
@@ -26,6 +28,12 @@ class ViewModelFactory private constructor(private val mMoviesRepository: Movies
         return when {
             modelClass.isAssignableFrom(FilmViewModel::class.java) -> {
                 FilmViewModel(mMoviesRepository) as T
+            }
+            modelClass.isAssignableFrom(SeriesViewModel::class.java) -> {
+                SeriesViewModel(mMoviesRepository) as T
+            }
+            modelClass.isAssignableFrom(DetailViewModel::class.java) -> {
+                DetailViewModel(mMoviesRepository) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }

@@ -47,6 +47,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_item_title_film" />
 
+    <ImageView
+        android:id="@+id/icon_popularity"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        android:src="@drawable/ic_favorite"
+        app:layout_constraintEnd_toStartOf="@id/tv_item_vote_film"
+        app:layout_constraintTop_toBottomOf="@id/tv_item_title_film"
+        android:contentDescription="@string/icon_popularity" />
+
     <TextView
         android:id="@+id/tv_item_vote_film"
         android:layout_width="wrap_content"

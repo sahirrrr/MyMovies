@@ -13,7 +13,7 @@
     <string name="genre">genre</string>
     <string name="duration">duration</string>
     <string name="rating_number">5.0</string>
-    <string name="episode">Episode:</string>
+    <string name="episode">E12</string>
     <string name="episode_number">12</string>
     <string name="poster">Poster</string>
     <string name="Synopsis">Synopsis</string>
@@ -28,4 +28,15 @@
     <string name="vote">Vote</string>
     <string name="popular_movies">Popular Movies</string>
     <string name="upcoming_movies">Upcoming Movies</string>
+    <string name="top_rated_series">Top Rated Series</string>
+    <string name="popular_series">Popular Series</string>
+    <string name="backdrop">backdrop</string>
+    <string name="tag_line">TagLine</string>
+    <string name="language">language</string>
+    <string name="introduction">Introduction</string>
+    <string name="buy_now">Buy now</string>
+    <string name="collect">Collect</string>
+    <string name="icon_popularity">icon_popularity</string>
+    <string name="popularity">Popularity</string>
+    <string name="season">S2</string>
 </resources>

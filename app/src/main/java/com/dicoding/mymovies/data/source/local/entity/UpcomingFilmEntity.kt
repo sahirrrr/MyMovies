@@ -6,7 +6,6 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class UpcomingFilmEntity(
-
     @field:SerializedName("id")
     val id: Int,
 
@@ -15,5 +14,4 @@ data class UpcomingFilmEntity(
 
     @field:SerializedName("backdrop_path")
     val backdropPath: String,
-
 ): Parcelable

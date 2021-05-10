@@ -29,51 +29,54 @@ class FilmFragment : Fragment() {
         if (activity != null) {
             val factory = ViewModelFactory.getInstance(requireActivity())
             val viewModel = ViewModelProvider(this, factory)[FilmViewModel::class.java]
+            upcomingMovies(viewModel)
+            popularMovies(viewModel)
+        }
+    }
 
-            //Upcoming Movies
-            val upcomingFilmAdapter = UpcomingFilmAdapter()
+    private fun upcomingMovies(viewModel: FilmViewModel) {
+        val upcomingFilmAdapter = UpcomingFilmAdapter()
 
-            binding.progressBar.visibility = View.VISIBLE
-            viewModel.getUpcomingFilm().observe(viewLifecycleOwner, { upcomingFilm ->
-                binding.progressBar.visibility = View.GONE
-                upcomingFilmAdapter.setMovies(upcomingFilm)
-                upcomingFilmAdapter.notifyDataSetChanged()
-            })
+        binding.progressBar.visibility = View.VISIBLE
+        viewModel.getUpcomingFilm().observe(viewLifecycleOwner, { upcomingFilm ->
+            binding.progressBar.visibility = View.GONE
+            upcomingFilmAdapter.setMovies(upcomingFilm)
+            upcomingFilmAdapter.notifyDataSetChanged()
+        })
 
-            with(binding.rvUpcomingFilm) {
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                setHasFixedSize(true)
-                adapter = upcomingFilmAdapter
-            }
+        with(binding.rvUpcomingFilm) {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            setHasFixedSize(true)
+            adapter = upcomingFilmAdapter
+        }
 
-            upcomingFilmAdapter.onClickItem = {
-                val intent = Intent(activity, DetailFilmActivity::class.java)
-                intent.putExtra(DetailFilmActivity.EXTRA_FILM, it)
-                startActivity(intent)
-            }
+        upcomingFilmAdapter.onClickItem = {
+            val intent = Intent(activity, DetailFilmActivity::class.java)
+            intent.putExtra(DetailFilmActivity.EXTRA_FILM, it.id)
+            startActivity(intent)
+        }
+    }
 
+    private fun popularMovies(viewModel: FilmViewModel) {
+        val filmAdapter = PopularFilmAdapter()
 
-            // Popular Movies
-            val filmAdapter = PopularFilmAdapter()
+        binding.progressBar.visibility = View.VISIBLE
+        viewModel.getPopularFilm().observe(viewLifecycleOwner, { film ->
+            binding.progressBar.visibility = View.GONE
+            filmAdapter.setMovies(film)
+            filmAdapter.notifyDataSetChanged()
+        })
 
-            binding.progressBar.visibility = View.VISIBLE
-            viewModel.getFilm().observe(viewLifecycleOwner, { film ->
-                binding.progressBar.visibility = View.GONE
-                filmAdapter.setMovies(film)
-                filmAdapter.notifyDataSetChanged()
-            })
+        with(binding.rvFilm) {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            setHasFixedSize(true)
+            adapter = filmAdapter
+        }
 
-            with(binding.rvFilm) {
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                setHasFixedSize(true)
-                adapter = filmAdapter
-            }
-
-            filmAdapter.onClickItem = {
-                val intent = Intent(activity, DetailFilmActivity::class.java)
-                intent.putExtra(DetailFilmActivity.EXTRA_FILM, it)
-                startActivity(intent)
-            }
+        filmAdapter.onClickItem = {
+            val intent = Intent(activity, DetailFilmActivity::class.java)
+            intent.putExtra(DetailFilmActivity.EXTRA_FILM, it.id)
+            startActivity(intent)
         }
     }
 }

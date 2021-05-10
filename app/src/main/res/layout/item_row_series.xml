@@ -4,102 +4,70 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_container"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="16dp"
     android:background="#FAFAFA">
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/img_poster_series"
-        android:layout_width="80dp"
-        android:layout_height="110dp"
+        android:layout_width="173dp"
+        android:layout_height="223dp"
         android:scaleType="fitXY"
         android:adjustViewBounds="true"
         app:riv_corner_radius="12dp"
         android:src="@color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_item_title_series"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:maxLines="2"
         android:fontFamily="@font/prompt_bold"
         android:textColor="#4A4A4A"
         android:textSize="14sp"
         tools:text="@string/title"
-        app:layout_constraintStart_toEndOf="@id/img_poster_series"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/img_poster_series"
+        app:layout_constraintBottom_toTopOf="@id/tv_item_first_release_series"
+        app:layout_constraintEnd_toEndOf="@id/img_poster_series"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <RatingBar
-        android:id="@+id/rating_bar_series"
-        android:theme="@style/RatingBar"
-        style="?android:attr/ratingBarStyleSmall"
+    <TextView
+        android:id="@+id/tv_item_first_release_series"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="14dp"
-        android:layout_marginBottom="10dp"
-        android:scaleX="1.2"
-        android:scaleY="1.2"
-        android:transformPivotX="0dp"
-        android:transformPivotY="0dp"
-        android:isIndicator="true"
-        android:numStars="5"
-        app:layout_constraintStart_toEndOf="@id/img_poster_series"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/prompt_regular"
+        android:textColor="#6B6B6B"
+        android:textSize="12sp"
+        tools:text="@string/release_date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_item_title_series" />
+
+    <ImageView
+        android:id="@+id/icon_popularity"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        android:src="@drawable/ic_favorite"
+        app:layout_constraintEnd_toStartOf="@id/tv_item_vote_film"
         app:layout_constraintTop_toBottomOf="@id/tv_item_title_series"
-        app:layout_constraintBottom_toTopOf="@id/tv_item_genre_series"/>
+        android:contentDescription="@string/icon_popularity" />
 
     <TextView
-        android:id="@+id/tv_item_rating_series"
+        android:id="@+id/tv_item_vote_film"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/prompt_regular"
         android:textColor="#6B6B6B"
         android:textSize="12sp"
-        tools:text="@string/rating_number"
-        app:layout_constraintStart_toEndOf="@id/rating_bar_series"
-        app:layout_constraintTop_toBottomOf="@id/tv_item_title_series"
-        app:layout_constraintBottom_toTopOf="@id/tv_item_genre_series"/>
-
-    <TextView
-        android:id="@+id/tv_item_genre_series"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:fontFamily="@font/prompt_regular"
-        android:textColor="#6B6B6B"
-        android:textSize="12sp"
-        tools:text="@string/genre"
-        app:layout_constraintStart_toEndOf="@id/img_poster_series"
-        app:layout_constraintTop_toBottomOf="@id/rating_bar_series"
-        app:layout_constraintBottom_toTopOf="@id/tv_item_episode"/>
-
-    <TextView
-        android:id="@+id/tv_item_episode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:fontFamily="@font/prompt_regular"
-        android:textColor="#6B6B6B"
-        android:textSize="12sp"
-        android:text="@string/episode"
-        app:layout_constraintStart_toEndOf="@id/img_poster_series"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
-    <TextView
-        android:id="@+id/tv_item_episode_number_series"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:fontFamily="@font/prompt_regular"
-        android:textColor="#6B6B6B"
-        android:textSize="12sp"
-        tools:text="@string/episode_number"
-        app:layout_constraintStart_toEndOf="@id/tv_item_episode"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        tools:text="@string/vote"
+        app:layout_constraintEnd_toEndOf="@id/img_poster_series"
+        app:layout_constraintTop_toBottomOf="@id/tv_item_title_series"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

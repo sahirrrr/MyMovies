@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.dicoding.mymovies.data.source.local.entity.PopularFilmEntity
 import com.dicoding.mymovies.R
-import com.dicoding.mymovies.databinding.ItemRowFilmBinding
+import com.dicoding.mymovies.databinding.ItemRowPopularFilmBinding
 
 class PopularFilmAdapter: RecyclerView.Adapter<PopularFilmAdapter.PopularFilmViewHolder>() {
     private var imgUrl = "https://image.tmdb.org/t/p/original/"
@@ -22,7 +22,7 @@ class PopularFilmAdapter: RecyclerView.Adapter<PopularFilmAdapter.PopularFilmVie
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularFilmViewHolder {
-        val binding = ItemRowFilmBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemRowPopularFilmBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return PopularFilmViewHolder(binding)
     }
 
@@ -34,7 +34,7 @@ class PopularFilmAdapter: RecyclerView.Adapter<PopularFilmAdapter.PopularFilmVie
     override fun getItemCount(): Int = listMovies.size
 
     @SuppressLint("SetTextI18n")
-    inner class PopularFilmViewHolder(private val binding: ItemRowFilmBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class PopularFilmViewHolder(private val binding: ItemRowPopularFilmBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(popularFilm: PopularFilmEntity) {
             with(binding) {
                 tvItemTitleFilm.text = popularFilm.title
