@@ -1,4 +1,4 @@
-package com.dicoding.mymovies.data.source
+package com.dicoding.mymovies.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,19 +10,8 @@ import com.dicoding.mymovies.data.source.local.entity.UpcomingFilmEntity
 import com.dicoding.mymovies.data.source.remote.RemoteDataSource
 import com.dicoding.mymovies.data.source.remote.response.DetailFilmResponse
 import com.dicoding.mymovies.data.source.remote.response.DetailSeriesResponse
-import com.dicoding.mymovies.data.source.remote.response.PopularSeriesResponse
 
-class MoviesRepository private constructor(private val remoteDataSource: RemoteDataSource): MoviesDataResource {
-
-    companion object {
-        @Volatile
-        private var instance: MoviesRepository? = null
-
-        fun getInstance(remoteDataSource: RemoteDataSource): MoviesRepository =
-                instance ?: synchronized(this) {
-                    MoviesRepository(remoteDataSource).apply { instance = this }
-                }
-    }
+class FakeMoviesRepository(private val remoteDataSource: RemoteDataSource): MoviesDataResource {
 
     override fun getPopularFilm(): LiveData<List<PopularFilmEntity>> {
         val filmResult = MutableLiveData<List<PopularFilmEntity>>()

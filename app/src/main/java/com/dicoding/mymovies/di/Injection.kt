@@ -1,7 +1,7 @@
 package com.dicoding.mymovies.di
 
 import android.content.Context
-import com.dicoding.mymovies.data.source.MoviesRepository
+import com.dicoding.mymovies.data.MoviesRepository
 import com.dicoding.mymovies.data.source.remote.RemoteDataSource
 
 object Injection {

@@ -1,4 +1,4 @@
-package com.dicoding.mymovies.data.source
+package com.dicoding.mymovies.data
 
 import androidx.lifecycle.LiveData
 import com.dicoding.mymovies.data.source.local.entity.PopularFilmEntity

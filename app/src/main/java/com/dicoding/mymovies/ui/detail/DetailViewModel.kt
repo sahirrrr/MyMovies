@@ -2,7 +2,7 @@ package com.dicoding.mymovies.ui.detail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.dicoding.mymovies.data.source.MoviesRepository
+import com.dicoding.mymovies.data.MoviesRepository
 import com.dicoding.mymovies.data.source.remote.response.DetailFilmResponse
 import com.dicoding.mymovies.data.source.remote.response.DetailSeriesResponse
 

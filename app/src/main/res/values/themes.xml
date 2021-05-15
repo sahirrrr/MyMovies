@@ -33,9 +33,8 @@
         <item name="colorControlActivated">@color/duskYellow</item>
     </style>
 
-    <style name="TransparentStatusBar" parent="@style/Theme.MyMovies" >
+    <style name="TransparentStatusBar" parent="Theme.MaterialComponents.DayNight.NoActionBar" >
         <!--Status bar transparent-->
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
     </style>
 </resources>

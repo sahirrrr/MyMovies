@@ -2,7 +2,7 @@ package com.dicoding.mymovies.ui.series
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.dicoding.mymovies.data.source.MoviesRepository
+import com.dicoding.mymovies.data.MoviesRepository
 import com.dicoding.mymovies.data.source.local.entity.PopularSeriesEntity
 import com.dicoding.mymovies.data.source.local.entity.TopRatedSeriesEntity
 
