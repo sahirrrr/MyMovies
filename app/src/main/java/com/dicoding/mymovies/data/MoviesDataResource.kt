@@ -2,12 +2,7 @@ package com.dicoding.mymovies.data
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
-import com.dicoding.mymovies.data.source.local.entity.PopularFilmEntity
-import com.dicoding.mymovies.data.source.local.entity.PopularSeriesEntity
-import com.dicoding.mymovies.data.source.local.entity.TopRatedSeriesEntity
-import com.dicoding.mymovies.data.source.local.entity.UpcomingFilmEntity
-import com.dicoding.mymovies.data.source.remote.response.DetailFilmResponse
-import com.dicoding.mymovies.data.source.remote.response.DetailSeriesResponse
+import com.dicoding.mymovies.data.source.local.entity.*
 import com.dicoding.mymovies.vo.Resource
 
 interface MoviesDataResource {
@@ -20,7 +15,16 @@ interface MoviesDataResource {
 
     fun getTopRatedSeries(): LiveData<Resource<PagedList<TopRatedSeriesEntity>>>
 
-    fun getDetailFilm(moviesId: Int): LiveData<DetailFilmResponse>
+    fun getDetailFilm(filmId: Int): LiveData<Resource<DetailFilmEntity>>
 
-    fun getDetailSeries(tvId: Int): LiveData<DetailSeriesResponse>
+    fun getDetailSeries(tvId: Int): LiveData<Resource<DetailSeriesEntity>>
+
+
+    fun getFavoriteFilm(): LiveData<PagedList<DetailFilmEntity>>
+
+    fun insertFavoriteFilm(detailFilm: DetailFilmEntity, isFavorite: Boolean)
+
+    fun getFavoriteSeries(): LiveData<PagedList<DetailSeriesEntity>>
+
+    fun insertFavoriteSeries(detailSeries: DetailSeriesEntity, isFavorite: Boolean)
 }

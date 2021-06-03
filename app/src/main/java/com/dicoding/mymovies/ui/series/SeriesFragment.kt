@@ -1,18 +1,18 @@
 package com.dicoding.mymovies.ui.series
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.mymovies.databinding.FragmentSeriesBinding
-import com.dicoding.mymovies.ui.detail.DetailSeriesActivity
 import com.dicoding.mymovies.ui.series.adapter.PopularSeriesAdapter
 import com.dicoding.mymovies.ui.series.adapter.TopRatedSeriesAdapter
 import com.dicoding.mymovies.viewmodel.ViewModelFactory
+import com.dicoding.mymovies.vo.Status
 
 class SeriesFragment : Fragment() {
 
@@ -39,21 +39,24 @@ class SeriesFragment : Fragment() {
 
         binding.progressBar.visibility = View.VISIBLE
         viewModel.getTopRatedSeries().observe(viewLifecycleOwner, { topRatedSeries ->
-            binding.progressBar.visibility = View.GONE
-            topRatedSeriesAdapter.setSeries(topRatedSeries)
-            topRatedSeriesAdapter.notifyDataSetChanged()
+            when (topRatedSeries.status) {
+                Status.SUCCESS -> {
+                    binding.progressBar.visibility = View.GONE
+                    topRatedSeriesAdapter.submitList(topRatedSeries.data)
+                    topRatedSeriesAdapter.notifyDataSetChanged()
+                }
+                Status.ERROR -> {
+                    binding.progressBar.visibility = View.GONE
+                    Toast.makeText(requireContext(), "Error network issue", Toast.LENGTH_SHORT).show()
+                }
+                Status.LOADING -> binding.progressBar.visibility = View.VISIBLE
+            }
         })
 
         with(binding.rvTopRatedSeries) {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             setHasFixedSize(true)
             adapter = topRatedSeriesAdapter
-        }
-
-        topRatedSeriesAdapter.onClickItem = {
-            val intent = Intent(activity, DetailSeriesActivity::class.java)
-            intent.putExtra(DetailSeriesActivity.EXTRA_SERIES, it.id)
-            startActivity(intent)
         }
     }
 
@@ -62,21 +65,24 @@ class SeriesFragment : Fragment() {
 
         binding.progressBar.visibility = View.VISIBLE
         viewModel.getPopularSeries().observe(viewLifecycleOwner, { popularSeries ->
-            binding.progressBar.visibility = View.GONE
-            popularSeriesAdapter.setSeries(popularSeries)
-            popularSeriesAdapter.notifyDataSetChanged()
+            when (popularSeries.status) {
+                Status.SUCCESS -> {
+                    binding.progressBar.visibility = View.GONE
+                    popularSeriesAdapter.submitList(popularSeries.data)
+                    popularSeriesAdapter.notifyDataSetChanged()
+                }
+                Status.ERROR -> {
+                    binding.progressBar.visibility = View.GONE
+                    Toast.makeText(requireContext(), "Error network issue", Toast.LENGTH_SHORT).show()
+                }
+                Status.LOADING -> binding.progressBar.visibility = View.VISIBLE
+            }
         })
 
         with(binding.rvPopularSeries) {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             setHasFixedSize(true)
             adapter = popularSeriesAdapter
-        }
-
-        popularSeriesAdapter.onClickItem = {
-            val intent = Intent(activity, DetailSeriesActivity::class.java)
-            intent.putExtra(DetailSeriesActivity.EXTRA_SERIES, it.id)
-            startActivity(intent)
         }
     }
 }

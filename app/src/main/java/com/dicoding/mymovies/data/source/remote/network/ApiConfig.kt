@@ -1,5 +1,6 @@
 package com.dicoding.mymovies.data.source.remote.network
 
+import com.dicoding.mymovies.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -14,7 +15,7 @@ class ApiConfig {
                 .addInterceptor(loggingInterceptor)
                 .build()
             val retrofit = Retrofit.Builder()
-                .baseUrl("https://api.themoviedb.org/3/")
+                .baseUrl(BuildConfig.MAIN_ADDRESS)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()

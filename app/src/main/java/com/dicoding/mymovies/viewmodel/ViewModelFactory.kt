@@ -7,6 +7,7 @@ import com.dicoding.mymovies.data.MoviesRepository
 import com.dicoding.mymovies.di.Injection
 import com.dicoding.mymovies.ui.detail.DetailViewModel
 import com.dicoding.mymovies.ui.film.FilmViewModel
+import com.dicoding.mymovies.ui.mylist.MyListViewModel
 import com.dicoding.mymovies.ui.series.SeriesViewModel
 
 class ViewModelFactory private constructor(private val mMoviesRepository: MoviesRepository): ViewModelProvider.NewInstanceFactory() {
@@ -34,6 +35,9 @@ class ViewModelFactory private constructor(private val mMoviesRepository: Movies
             }
             modelClass.isAssignableFrom(DetailViewModel::class.java) -> {
                 DetailViewModel(mMoviesRepository) as T
+            }
+            modelClass.isAssignableFrom(MyListViewModel::class.java) -> {
+                MyListViewModel(mMoviesRepository) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }

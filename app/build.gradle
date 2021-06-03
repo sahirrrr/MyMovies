@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-android-extensions'
+    id 'kotlin-parcelize'
     id 'kotlin-kapt'
 }
 
@@ -18,6 +18,8 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "API_KEY", API_KEY)
+        buildConfigField("String", "MAIN_ADDRESS", MAIN_ADDRESS)
+        buildConfigField("String", "IMAGE_ADDRESS", IMAGE_ADDRESS)
     }
     buildFeatures {
         viewBinding true
@@ -34,6 +36,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    kapt {
+        correctErrorTypes true
     }
 }
 
@@ -56,6 +61,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
     implementation "androidx.test.espresso:espresso-idling-resource:3.3.0"
     implementation "androidx.room:room-runtime:2.3.0"
+    implementation "androidx.room:room-ktx:2.3.0"
     kapt "androidx.room:room-compiler:2.3.0"
     androidTestImplementation "androidx.room:room-testing:2.3.0"
     implementation "androidx.paging:paging-runtime:2.1.1"

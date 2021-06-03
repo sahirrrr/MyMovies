@@ -110,4 +110,35 @@ class MainActivityTest {
         onView(withId(R.id.tv_item_popularity_series)).check(matches(isDisplayed()))
         onView(withId(R.id.tv_item_popularity_series)).check(matches(withText("${(dataDetailSeries.voteAverage * 10).toInt()}%")))
     }
+
+    @Test
+    fun loadMyListFilm() {
+        onView(withText("My List")).perform(ViewActions.click())
+        onView(withId(R.id.rv_favorite_film)).check(matches(isDisplayed()))
+        onView(withId(R.id.rv_favorite_film)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(dataPopularFilm.size))
+    }
+
+
+    @Test
+    fun loadMyListSeries() {
+        onView(withText("My List")).perform(ViewActions.click())
+        onView(withId(R.id.rv_favorite_series)).check(matches(isDisplayed()))
+        onView(withId(R.id.rv_favorite_series)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(dataPopularSeries.size))
+    }
+
+    @Test
+    fun addFilmToMyList() {
+        onView(withId(R.id.rv_film)).check(matches(isDisplayed()))
+        onView(withId(R.id.rv_film)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, ViewActions.click()))
+        onView(withId(R.id.icon_bookmark)).perform(ViewActions.click())
+    }
+
+    @Test
+    fun addSeriesToMyList() {
+        onView(withText("Series")).perform(ViewActions.click())
+        onView(withId(R.id.rv_popular_series)).check(matches(isDisplayed()))
+        onView(withId(R.id.rv_popular_series)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, ViewActions.click()))
+        onView(withId(R.id.icon_bookmark)).perform(ViewActions.click())
+    }
+
 }

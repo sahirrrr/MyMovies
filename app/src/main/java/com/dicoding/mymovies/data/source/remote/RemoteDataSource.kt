@@ -1,10 +1,8 @@
 package com.dicoding.mymovies.data.source.remote
 
 import android.util.Log
-import com.dicoding.mymovies.data.source.local.entity.PopularFilmEntity
-import com.dicoding.mymovies.data.source.local.entity.PopularSeriesEntity
-import com.dicoding.mymovies.data.source.local.entity.TopRatedSeriesEntity
-import com.dicoding.mymovies.data.source.local.entity.UpcomingFilmEntity
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.dicoding.mymovies.data.source.remote.network.ApiConfig
 import com.dicoding.mymovies.data.source.remote.response.*
 import com.dicoding.mymovies.utils.EspressoIdlingResources
@@ -25,12 +23,13 @@ class RemoteDataSource {
             }
     }
 
-    fun getPopularFilm(callback: LoadPopularFilmCallback) {
+    fun getPopularFilm(): LiveData<ApiResponse<List<PopularFilmResults>>> {
         EspressoIdlingResources.increment()
+        val responseResults = MutableLiveData<ApiResponse<List<PopularFilmResults>>>()
         val client = ApiConfig.getApiService().getPopularFilm()
         client.enqueue(object : Callback<PopularFilmResponse> {
             override fun onResponse(call: Call<PopularFilmResponse>, response: Response<PopularFilmResponse>) {
-                callback.onPopularFilmReceived(response.body()?.results as List<PopularFilmEntity>)
+                responseResults.value = response.body()?.results?.let { ApiResponse.success(it) }
                 EspressoIdlingResources.decrement()
             }
 
@@ -40,14 +39,16 @@ class RemoteDataSource {
                 t.printStackTrace()
             }
         })
+        return responseResults
     }
 
-    fun getUpcomingFilm(callback: LoadUpcomingFilmCallback) {
+    fun getUpcomingFilm(): LiveData<ApiResponse<List<UpcomingFilmResults>>> {
         EspressoIdlingResources.increment()
+        val responseResults = MutableLiveData<ApiResponse<List<UpcomingFilmResults>>>()
         val client = ApiConfig.getApiService().getUpcomingFilm()
         client.enqueue(object : Callback<UpcomingFilmResponse> {
             override fun onResponse(call: Call<UpcomingFilmResponse>, response: Response<UpcomingFilmResponse>) {
-                callback.onUpcomingFilmReceived(response.body()?.results as List<UpcomingFilmEntity>)
+                responseResults.value = response.body()?.results?.let { ApiResponse.success(it) }
                 EspressoIdlingResources.decrement()
             }
 
@@ -57,14 +58,16 @@ class RemoteDataSource {
                 t.printStackTrace()
             }
         })
+        return responseResults
     }
 
-    fun getTopRatedSeries(callback: LoadTopRatedSeriesCallback) {
+    fun getTopRatedSeries(): LiveData<ApiResponse<List<TopRatedSeriesResults>>> {
         EspressoIdlingResources.increment()
+        val responseResults = MutableLiveData<ApiResponse<List<TopRatedSeriesResults>>>()
         val client = ApiConfig.getApiService().getTopRatedSeries()
         client.enqueue(object : Callback<TopRatedSeriesResponse> {
             override fun onResponse(call: Call<TopRatedSeriesResponse>, response: Response<TopRatedSeriesResponse>) {
-                callback.onTopRatedSeriesReceived(response.body()?.results as List<TopRatedSeriesEntity>)
+                responseResults.value = response.body()?.results?.let { ApiResponse.success(it) }
                 EspressoIdlingResources.decrement()
             }
 
@@ -74,14 +77,16 @@ class RemoteDataSource {
                 t.printStackTrace()
             }
         })
+        return responseResults
     }
 
-    fun getPopularSeries(callback: LoadPopularSeriesCallback) {
+    fun getPopularSeries(): LiveData<ApiResponse<List<PopularSeriesResults>>> {
         EspressoIdlingResources.increment()
+        val responseResults = MutableLiveData<ApiResponse<List<PopularSeriesResults>>>()
         val client = ApiConfig.getApiService().getPopularSeries()
         client.enqueue(object : Callback<PopularSeriesResponse> {
             override fun onResponse(call: Call<PopularSeriesResponse>, response: Response<PopularSeriesResponse>) {
-                callback.onPopularSeriesReceived(response.body()?.results as List<PopularSeriesEntity>)
+                responseResults.value = response.body()?.results?.let { ApiResponse.success(it) }
                 EspressoIdlingResources.decrement()
             }
 
@@ -91,14 +96,16 @@ class RemoteDataSource {
                 t.printStackTrace()
             }
         })
+        return responseResults
     }
 
-    fun getDetailFilm(callback: LoadDetailFilmCallback, moviesId: Int) {
+    fun getDetailFilm(filmId: Int): LiveData<ApiResponse<DetailFilmResponse>> {
         EspressoIdlingResources.increment()
-        val client = ApiConfig.getApiService().getDetailFilm(moviesId)
+        val responseResults = MutableLiveData<ApiResponse<DetailFilmResponse>>()
+        val client = ApiConfig.getApiService().getDetailFilm(filmId)
         client.enqueue(object : Callback<DetailFilmResponse> {
             override fun onResponse(call: Call<DetailFilmResponse>, response: Response<DetailFilmResponse>) {
-                callback.onDetailFilmReceived(response.body() as DetailFilmResponse)
+                responseResults.value = ApiResponse.success(response.body() as DetailFilmResponse)
                 EspressoIdlingResources.decrement()
             }
 
@@ -107,16 +114,17 @@ class RemoteDataSource {
                 Log.d("RemoteDataSource", t.message.toString())
                 t.printStackTrace()
             }
-
         })
+        return responseResults
     }
 
-    fun getDetailSeries(callback: LoadDetailSeriesCallback, tvId: Int) {
+    fun getDetailSeries(tvId: Int): LiveData<ApiResponse<DetailSeriesResponse>> {
         EspressoIdlingResources.increment()
+        val responseResults = MutableLiveData<ApiResponse<DetailSeriesResponse>>()
         val client = ApiConfig.getApiService().getDetailSeries(tvId)
         client.enqueue(object : Callback<DetailSeriesResponse> {
             override fun onResponse(call: Call<DetailSeriesResponse>, response: Response<DetailSeriesResponse>) {
-                callback.onDetailSeriesReceived(response.body() as DetailSeriesResponse)
+                responseResults.value = ApiResponse.success(response.body() as DetailSeriesResponse)
                 EspressoIdlingResources.decrement()
             }
 
@@ -126,33 +134,7 @@ class RemoteDataSource {
                 t.printStackTrace()
 
             }
-
         })
-
+        return responseResults
     }
-
-    interface LoadPopularFilmCallback {
-        fun onPopularFilmReceived(filmResponse: List<PopularFilmEntity>)
-    }
-
-    interface LoadUpcomingFilmCallback {
-        fun onUpcomingFilmReceived(filmResponse: List<UpcomingFilmEntity>)
-    }
-
-    interface LoadTopRatedSeriesCallback {
-        fun onTopRatedSeriesReceived(seriesResponse: List<TopRatedSeriesEntity>)
-    }
-
-    interface LoadPopularSeriesCallback {
-        fun onPopularSeriesReceived(seriesResponse: List<PopularSeriesEntity>)
-    }
-
-    interface LoadDetailFilmCallback {
-        fun onDetailFilmReceived(filmResponse: DetailFilmResponse)
-    }
-
-    interface LoadDetailSeriesCallback {
-        fun onDetailSeriesReceived(seriesResponse: DetailSeriesResponse)
-    }
-
 }

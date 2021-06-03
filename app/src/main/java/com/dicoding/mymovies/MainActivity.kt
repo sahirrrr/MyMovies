@@ -1,8 +1,8 @@
 package com.dicoding.mymovies
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
 import com.dicoding.mymovies.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayoutMediator
 

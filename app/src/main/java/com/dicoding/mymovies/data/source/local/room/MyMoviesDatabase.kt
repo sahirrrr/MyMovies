@@ -4,16 +4,15 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.dicoding.mymovies.data.source.local.entity.PopularFilmEntity
-import com.dicoding.mymovies.data.source.local.entity.PopularSeriesEntity
-import com.dicoding.mymovies.data.source.local.entity.TopRatedSeriesEntity
-import com.dicoding.mymovies.data.source.local.entity.UpcomingFilmEntity
+import com.dicoding.mymovies.data.source.local.entity.*
 
 @Database(entities =
 [PopularFilmEntity::class,
 PopularSeriesEntity::class,
 TopRatedSeriesEntity::class,
-UpcomingFilmEntity::class],
+UpcomingFilmEntity::class,
+DetailFilmEntity::class,
+DetailSeriesEntity::class],
     version = 2, exportSchema = false)
 abstract class MyMoviesDatabase : RoomDatabase() {
     abstract fun MoviesDao() : MoviesDao

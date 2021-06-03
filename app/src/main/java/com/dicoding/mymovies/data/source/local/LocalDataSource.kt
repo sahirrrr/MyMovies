@@ -2,12 +2,10 @@ package com.dicoding.mymovies.data.source.local
 
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
-import androidx.room.*
-import com.dicoding.mymovies.data.source.local.entity.PopularFilmEntity
-import com.dicoding.mymovies.data.source.local.entity.PopularSeriesEntity
-import com.dicoding.mymovies.data.source.local.entity.TopRatedSeriesEntity
-import com.dicoding.mymovies.data.source.local.entity.UpcomingFilmEntity
+import com.dicoding.mymovies.data.source.local.entity.*
 import com.dicoding.mymovies.data.source.local.room.MoviesDao
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class LocalDataSource private constructor(private val moviesDao: MoviesDao) {
     companion object {
@@ -19,19 +17,11 @@ class LocalDataSource private constructor(private val moviesDao: MoviesDao) {
     // Popular Film
     fun getAllPopularFilm(): DataSource.Factory<Int, PopularFilmEntity> = moviesDao.getAllPopularFilm()
 
-    fun getSelectedPopularFilm(id: Int) : LiveData<PopularFilmEntity> = moviesDao.getSelectedPopularFilm(id)
-
-//    @Query("UPDATE popular_film_table  ")
-
     fun insertPopularFilm(popularFilm: List<PopularFilmEntity>) = moviesDao.insertPopularFilm(popularFilm)
 
 
     // Popular Series
     fun getAllPopularSeries(): DataSource.Factory<Int, PopularSeriesEntity> = moviesDao.getAllPopularSeries()
-
-    fun getSelectedPopularSeries(id: Int) : LiveData<PopularSeriesEntity> = moviesDao.getSelectedPopularSeries(id)
-
-//    @Query("UPDATE popular_series_table  ")
 
     fun insertPopularSeries(popularSeries: List<PopularSeriesEntity>) = moviesDao.insertPopularSeries(popularSeries)
 
@@ -39,56 +29,42 @@ class LocalDataSource private constructor(private val moviesDao: MoviesDao) {
     // Top Rated Series
     fun getAllTopRatedSeries(): DataSource.Factory<Int, TopRatedSeriesEntity> = moviesDao.getAllTopRatedSeries()
 
-    fun getSelectedTopRatedSeries(id: Int) : LiveData<TopRatedSeriesEntity> = moviesDao.getSelectedTopRatedSeries(id)
-
-//    @Query("UPDATE top_rated_series_table  ")
-
-    fun insertTopRatedSeries(topRatedSeries: TopRatedSeriesEntity) = moviesDao.insertTopRatedSeries(topRatedSeries)
+    fun insertTopRatedSeries(topRatedSeries: List<TopRatedSeriesEntity>) = moviesDao.insertTopRatedSeries(topRatedSeries)
 
 
     // Upcoming Film
     fun getAllUpcomingFilm(): DataSource.Factory<Int, UpcomingFilmEntity> = moviesDao.getAllUpcomingFilm()
 
-    fun getSelectedUpcomingFilm(id: Int) : LiveData<UpcomingFilmEntity> = moviesDao.getSelectedUpcomingFilm(id)
-
-//    @Query("UPDATE upcoming_film_table  ")
-
     fun insertUpcomingFilm(upcomingFilm: List<UpcomingFilmEntity>) = moviesDao.insertUpcomingFilm(upcomingFilm)
 
 
-    //Favorite
-    fun getAllFavoritePopularFilm() : DataSource.Factory<Int, PopularFilmEntity> = moviesDao.getAllFavoritePopularFilm()
+    // Detail
+    fun getDetailFilm(id: Int): LiveData<DetailFilmEntity> = moviesDao.getDetailFilm(id)
 
-    fun insertFavoritePopularFilm(popularFilm: PopularFilmEntity, isFavorite : Boolean) {
-        popularFilm.favorite = isFavorite
-        moviesDao.insertFavoritePopularFilm(popularFilm)
+    fun insertDetailFilm(detailFilm: DetailFilmEntity) = moviesDao.insertDetailFilm(detailFilm)
+
+    fun getDetailSeries(id: Int): LiveData<DetailSeriesEntity> = moviesDao.getDetailSeries(id)
+
+    fun insertDetailSeries(detailSeries: DetailSeriesEntity) = moviesDao.insertDetailSeries(detailSeries)
+
+
+    //Favorite Film
+    fun getAllFavoriteFilm() : DataSource.Factory<Int, DetailFilmEntity> = moviesDao.getAllFavoriteFilm()
+
+    fun insertFavoriteFilm(film: DetailFilmEntity, isFavorite : Boolean) {
+        film.favorite = isFavorite
+        GlobalScope.launch {
+            moviesDao.insertFavoriteFilm(film)
+        }
     }
 
+    //Favorite Series
+    fun getAllFavoriteSeries() : DataSource.Factory<Int, DetailSeriesEntity> = moviesDao.getAllFavoriteSeries()
 
-
-    fun getAllFavoritePopularSeries() : DataSource.Factory<Int, PopularSeriesEntity> = moviesDao.getAllFavoritePopularSeries()
-
-    fun insertFavoritePopularSeries(popularSeries: PopularSeriesEntity, isFavorite : Boolean) {
-        popularSeries.favorite = isFavorite
-        moviesDao.insertFavoritePopularSeries(popularSeries)
+    fun insertFavoriteSeries(series: DetailSeriesEntity, isFavorite : Boolean) {
+        series.favorite = isFavorite
+        GlobalScope.launch {
+            moviesDao.insertFavoriteSeries(series)
+        }
     }
-
-
-
-    fun getAllFavoriteTopRatedSeries() : DataSource.Factory<Int, TopRatedSeriesEntity> = moviesDao.getAllFavoriteTopRatedSeries()
-
-    fun insertFavoriteTopRatedSeries(topRatedSeries: TopRatedSeriesEntity, isFavorite : Boolean) {
-        topRatedSeries.favorite = isFavorite
-        moviesDao.insertFavoriteTopRatedSeries(topRatedSeries)
-    }
-
-
-
-    fun getAllFavoriteUpcomingFilm() : DataSource.Factory<Int, UpcomingFilmEntity> = moviesDao.getAllFavoriteUpcomingFilm()
-
-    fun insertFavoriteUpcomingFilm(upcomingFilm: UpcomingFilmEntity, isFavorite : Boolean) {
-        upcomingFilm.favorite = isFavorite
-        moviesDao.insertFavoriteUpcomingFilm(upcomingFilm)
-    }
-
 }

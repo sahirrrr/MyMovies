@@ -1,13 +1,11 @@
 package com.dicoding.mymovies.data.source.local.room
 
 import androidx.lifecycle.LiveData
-import com.dicoding.mymovies.data.source.local.entity.PopularFilmEntity
 import androidx.paging.DataSource
 import androidx.room.*
-import com.dicoding.mymovies.data.source.local.entity.PopularSeriesEntity
-import com.dicoding.mymovies.data.source.local.entity.TopRatedSeriesEntity
-import com.dicoding.mymovies.data.source.local.entity.UpcomingFilmEntity
+import com.dicoding.mymovies.data.source.local.entity.*
 
+@Dao
 interface MoviesDao {
     // Popular Film
     @Query("SELECT * FROM popular_film_table")
@@ -15,8 +13,6 @@ interface MoviesDao {
 
     @Query("SELECT * FROM popular_film_table where id = :id")
     fun getSelectedPopularFilm(id: Int) : LiveData<PopularFilmEntity>
-
-//    @Query("UPDATE popular_film_table  ")
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertPopularFilm(popularFilm: List<PopularFilmEntity>)
@@ -29,8 +25,6 @@ interface MoviesDao {
     @Query("SELECT * FROM popular_series_table where id = :id")
     fun getSelectedPopularSeries(id: Int) : LiveData<PopularSeriesEntity>
 
-//    @Query("UPDATE popular_series_table  ")
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertPopularSeries(popularSeries: List<PopularSeriesEntity>)
 
@@ -42,10 +36,8 @@ interface MoviesDao {
     @Query("SELECT * FROM top_rated_series_table where id = :id")
     fun getSelectedTopRatedSeries(id: Int) : LiveData<TopRatedSeriesEntity>
 
-//    @Query("UPDATE top_rated_series_table  ")
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertTopRatedSeries(topRatedSeries: TopRatedSeriesEntity)
+    fun insertTopRatedSeries(topRatedSeries: List<TopRatedSeriesEntity>)
 
 
     // Upcoming Film
@@ -55,64 +47,35 @@ interface MoviesDao {
     @Query("SELECT * FROM upcoming_film_table where id = :id")
     fun getSelectedUpcomingFilm(id: Int) : LiveData<UpcomingFilmEntity>
 
-//    @Query("UPDATE upcoming_film_table  ")
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertUpcomingFilm(upcomingFilm: List<UpcomingFilmEntity>)
 
 
-    //Favorite
-    @Query("SELECT * FROM popular_film_table where favorite = :favoritePopularFilm")
-    fun getAllFavoritePopularFilm(favoritePopularFilm : Boolean = true) : DataSource.Factory<Int, PopularFilmEntity>
+    //Detail
+    @Query("SELECT * FROM detail_film_table where id = :id")
+    fun getDetailFilm(id: Int): LiveData<DetailFilmEntity>
 
-//    @Query("SELECT count(id) and count(favorite) from popular_film_table where id = :id")
-//    fun checkFavoritePopularFilm(id: Int) : Int
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertDetailFilm(detailFilm: DetailFilmEntity)
 
-    @Update
-    fun insertFavoritePopularFilm(popularFilm: PopularFilmEntity)
+    @Query("SELECT * FROM detail_series_table where id = :id")
+    fun getDetailSeries(id: Int): LiveData<DetailSeriesEntity>
 
-//    @Delete
-//    fun deleteFavoritePopularFilm(popularFilm: PopularFilmEntity)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertDetailSeries(detailSeries: DetailSeriesEntity)
 
 
-
-    @Query("SELECT * FROM popular_series_table where favorite = :favoritePopularSeries")
-    fun getAllFavoritePopularSeries(favoritePopularSeries : Boolean = true) : DataSource.Factory<Int, PopularSeriesEntity>
-
-//    @Query("SELECT count(id) and count(favorite) from popular_series_table where id = :id")
-//    fun checkFavoritePopularSeries(id: Int) : Int
+    //Favorite Film
+    @Query("SELECT * FROM detail_film_table where favorite = :favoriteFilm")
+    fun getAllFavoriteFilm(favoriteFilm : Boolean = true) : DataSource.Factory<Int, DetailFilmEntity>
 
     @Update
-    fun insertFavoritePopularSeries(popularSeries: PopularSeriesEntity)
+    suspend fun insertFavoriteFilm(film: DetailFilmEntity)
 
-//    @Delete
-//    fun deleteFavoritePopularSeries(popularSeries: PopularSeriesEntity)
-
-
-
-    @Query("SELECT * FROM top_rated_series_table where favorite = :favoriteTopRatedSeries")
-    fun getAllFavoriteTopRatedSeries(favoriteTopRatedSeries : Boolean = true) : DataSource.Factory<Int, TopRatedSeriesEntity>
-
-//    @Query("SELECT count(id) and count(favorite) from top_rated_series_table where id = :id")
-//    fun checkFavoriteTopRatedSeries(id: Int) : Int
+    //Favorite Series
+    @Query("SELECT * FROM detail_series_table where favorite = :favoriteSeries")
+    fun getAllFavoriteSeries(favoriteSeries : Boolean = true) : DataSource.Factory<Int, DetailSeriesEntity>
 
     @Update
-    fun insertFavoriteTopRatedSeries(topRatedSeries: TopRatedSeriesEntity)
-
-//    @Delete
-//    fun deleteFavoriteTopRatedSeries(topRatedSeries: TopRatedSeriesEntity)
-
-
-
-    @Query("SELECT * FROM upcoming_film_table where favorite = :favoriteUpcomingFilm")
-    fun getAllFavoriteUpcomingFilm(favoriteUpcomingFilm : Boolean = true) : DataSource.Factory<Int, UpcomingFilmEntity>
-
-//    @Query("SELECT count(id) and count(favorite) from upcoming_film_table where id = :id")
-//    fun checkFavoriteUpcomingFilm(id: Int) : Int
-
-    @Update
-    fun insertFavoriteUpcomingFilm(upcomingFilm: UpcomingFilmEntity)
-
-//    @Delete
-//    fun deleteFavoriteUpcomingFilm(upcomingFilm: UpcomingFilmEntity)
+    suspend fun insertFavoriteSeries(series: DetailSeriesEntity)
 }

@@ -4,11 +4,11 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.dicoding.mymovies.data.MoviesRepository
-import com.dicoding.mymovies.data.source.remote.response.DetailFilmResponse
-import com.dicoding.mymovies.data.source.remote.response.DetailSeriesResponse
+import com.dicoding.mymovies.data.source.local.entity.DetailFilmEntity
+import com.dicoding.mymovies.data.source.local.entity.DetailSeriesEntity
 import com.dicoding.mymovies.utils.DataMovies
+import com.dicoding.mymovies.vo.Resource
 import com.nhaarman.mockitokotlin2.verify
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -21,13 +21,12 @@ import org.mockito.junit.MockitoJUnitRunner
 class DetailViewModelTest {
 
     private lateinit var viewModel: DetailViewModel
-    private val popularFilmResponse = DataMovies.generateDummyPopularFilm()
-    private val popularFilmId = popularFilmResponse[0].id
-    private val detailFilmResponse = DataMovies.generateDummyDetailFilm()
 
-    private val popularSeriesResponse = DataMovies.generateDummyPopularSeries()
-    private val popularSeriesId = popularSeriesResponse[0].id
-    private val detailSeriesResponse = DataMovies.generateDummyDetailSeries()
+    private val dummyPopularFilm = DataMovies.generateDummyPopularFilm()[0]
+    private val popularFilmId = dummyPopularFilm.id
+
+    private val dummyPopularSeries = DataMovies.generateDummyPopularSeries()[0]
+    private val popularSeriesId = dummyPopularSeries.id
 
 
     @get:Rule
@@ -37,65 +36,46 @@ class DetailViewModelTest {
     private lateinit var moviesRepository: MoviesRepository
 
     @Mock
-    private lateinit var filmObserver: Observer<DetailFilmResponse>
-
+    private lateinit var filmObserver: Observer<Resource<DetailFilmEntity>>
     @Mock
-    private lateinit var seriesObserver: Observer<DetailSeriesResponse>
+    private lateinit var seriesObserver: Observer<Resource<DetailSeriesEntity>>
 
     @Before
     fun setUp() {
         viewModel = DetailViewModel(moviesRepository)
+        viewModel.setSelectedFilm(popularFilmId)
+        viewModel.setSelectedSeries(popularSeriesId)
     }
 
     @Test
-    fun getDetailFilm() {
-        val dataDetailFilm = MutableLiveData<DetailFilmResponse>()
-        dataDetailFilm.value = detailFilmResponse
+    fun isFavoriteFilm() {
+        val dataFavoriteFilm = Resource.success(DataMovies.generateDummyDetailFilm())
+        val dummyFavoriteFilm = MutableLiveData<Resource<DetailFilmEntity>>()
+        dummyFavoriteFilm.value = dataFavoriteFilm
 
-        `when`(moviesRepository.getDetailFilm(popularFilmId)).thenReturn(dataDetailFilm)
-        viewModel.setSelectedFilm(popularFilmId.toString())
-        val detailFilmEntities = viewModel.getDetailFilm().value as DetailFilmResponse
-        verify(moviesRepository).getDetailFilm(popularFilmId)
+        `when`(moviesRepository.getDetailFilm(popularFilmId)).thenReturn(dummyFavoriteFilm)
+        viewModel.detailFilm = moviesRepository.getDetailFilm(popularFilmId)
 
-        assertNotNull(detailFilmEntities)
-        assertEquals(dataDetailFilm.value?.id, detailFilmEntities.id)
-        assertEquals(dataDetailFilm.value?.title, detailFilmEntities.title)
-        assertEquals(dataDetailFilm.value?.releaseDate, detailFilmEntities.releaseDate)
-        assertEquals(dataDetailFilm.value?.tagLine, detailFilmEntities.tagLine)
-        assertEquals(dataDetailFilm.value?.originalLanguage, detailFilmEntities.originalLanguage)
-        assertEquals(dataDetailFilm.value?.overview, detailFilmEntities.overview)
-        assertEquals(dataDetailFilm.value?.voteAverage, detailFilmEntities.voteAverage)
-        assertEquals(dataDetailFilm.value?.posterPath, detailFilmEntities.posterPath)
-        assertEquals(dataDetailFilm.value?.backdropPath, detailFilmEntities.backdropPath)
+        viewModel.setFavoriteFilm()
+        verify(moviesRepository).insertFavoriteFilm(dummyFavoriteFilm.value?.data as DetailFilmEntity, true)
 
-        viewModel.getDetailFilm().observeForever(filmObserver)
-        verify(filmObserver).onChanged(detailFilmResponse)
+        viewModel.detailFilm.observeForever(filmObserver)
+        verify(filmObserver).onChanged(dataFavoriteFilm)
     }
 
     @Test
-    fun getDetailSeries() {
-        val dataDetailSeries = MutableLiveData<DetailSeriesResponse>()
-        dataDetailSeries.value = detailSeriesResponse
+    fun isFavoriteSeries() {
+        val dataFavoriteSeries = Resource.success(DataMovies.generateDummyDetailSeries())
+        val dummyFavoriteSeries = MutableLiveData<Resource<DetailSeriesEntity>>()
+        dummyFavoriteSeries.value = dataFavoriteSeries
 
-        `when`(moviesRepository.getDetailSeries(popularSeriesId)).thenReturn(dataDetailSeries)
-        viewModel.setSelectedSeries(popularSeriesId.toString())
-        val detailFilmEntities = viewModel.getDetailSeries().value as DetailSeriesResponse
-        verify(moviesRepository).getDetailSeries(popularSeriesId)
+        `when`(moviesRepository.getDetailSeries(popularSeriesId)).thenReturn(dummyFavoriteSeries)
+        viewModel.detailSeries = moviesRepository.getDetailSeries(popularSeriesId)
 
-        assertNotNull(detailFilmEntities)
-        assertEquals(dataDetailSeries.value?.id, detailFilmEntities.id)
-        assertEquals(dataDetailSeries.value?.name, detailFilmEntities.name)
-        assertEquals(dataDetailSeries.value?.firstAirDate, detailFilmEntities.firstAirDate)
-        assertEquals(dataDetailSeries.value?.numberOfSeasons, detailFilmEntities.numberOfSeasons)
-        assertEquals(dataDetailSeries.value?.numberOfEpisodes, detailFilmEntities.numberOfEpisodes)
-        assertEquals(dataDetailSeries.value?.originalLanguage, detailFilmEntities.originalLanguage)
-        assertEquals(dataDetailSeries.value?.overview, detailFilmEntities.overview)
-        assertEquals(dataDetailSeries.value?.voteAverage, detailFilmEntities.voteAverage)
-        assertEquals(dataDetailSeries.value?.posterPath, detailFilmEntities.posterPath)
-        assertEquals(dataDetailSeries.value?.backdropPath, detailFilmEntities.backdropPath)
+        viewModel.setFavoriteSeries()
+        verify(moviesRepository).insertFavoriteSeries(dummyFavoriteSeries.value?.data as DetailSeriesEntity, true)
 
-        viewModel.getDetailSeries().observeForever(seriesObserver)
-        verify(seriesObserver).onChanged(detailSeriesResponse)
+        viewModel.detailSeries.observeForever(seriesObserver)
+        verify(seriesObserver).onChanged(dataFavoriteSeries)
     }
-
 }

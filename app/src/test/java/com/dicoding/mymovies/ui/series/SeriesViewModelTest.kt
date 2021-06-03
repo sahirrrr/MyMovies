@@ -3,10 +3,11 @@ package com.dicoding.mymovies.ui.series
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.paging.PagedList
 import com.dicoding.mymovies.data.MoviesRepository
 import com.dicoding.mymovies.data.source.local.entity.PopularSeriesEntity
 import com.dicoding.mymovies.data.source.local.entity.TopRatedSeriesEntity
-import com.dicoding.mymovies.utils.DataMovies
+import com.dicoding.mymovies.vo.Resource
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -30,10 +31,16 @@ class SeriesViewModelTest {
     private lateinit var moviesRepository: MoviesRepository
 
     @Mock
-    private lateinit var popularSeriesObserver: Observer<List<PopularSeriesEntity>>
+    private lateinit var popularSeriesObserver: Observer<Resource<PagedList<PopularSeriesEntity>>>
 
     @Mock
-    private lateinit var topRatedSeriesObserver: Observer<List<TopRatedSeriesEntity>>
+    private lateinit var topRatedSeriesObserver: Observer<Resource<PagedList<TopRatedSeriesEntity>>>
+
+    @Mock
+    private lateinit var popularPagedList: PagedList<PopularSeriesEntity>
+
+    @Mock
+    private lateinit var topRatedPagedList: PagedList<TopRatedSeriesEntity>
 
     @Before
     fun setUp() {
@@ -42,12 +49,13 @@ class SeriesViewModelTest {
 
     @Test
     fun getPopularSeries() {
-        val dataPopularSeries = DataMovies.generateDummyPopularSeries()
-        val series = MutableLiveData<List<PopularSeriesEntity>>()
+        val dataPopularSeries = Resource.success(popularPagedList)
+        `when`(dataPopularSeries.data?.size).thenReturn(20)
+        val series = MutableLiveData<Resource<PagedList<PopularSeriesEntity>>>()
         series.value = dataPopularSeries
 
         `when`(moviesRepository.getPopularSeries()).thenReturn(series)
-        val popularSeriesEntity = viewModel.getPopularSeries().value
+        val popularSeriesEntity = viewModel.getPopularSeries().value?.data
         verify(moviesRepository).getPopularSeries()
         assertNotNull(popularSeriesEntity)
         assertEquals(20, popularSeriesEntity?.size)
@@ -58,12 +66,13 @@ class SeriesViewModelTest {
 
     @Test
     fun getTopRatedSeries() {
-        val dataTopRatedSeries = DataMovies.generateDummyTopRatedSeries()
-        val series = MutableLiveData<List<TopRatedSeriesEntity>>()
+        val dataTopRatedSeries = Resource.success(topRatedPagedList)
+        `when`(dataTopRatedSeries.data?.size).thenReturn(20)
+        val series = MutableLiveData<Resource<PagedList<TopRatedSeriesEntity>>>()
         series.value = dataTopRatedSeries
 
         `when`(moviesRepository.getTopRatedSeries()).thenReturn(series)
-        val topRatedSeriesEntity = viewModel.getTopRatedSeries().value
+        val topRatedSeriesEntity = viewModel.getTopRatedSeries().value?.data
         verify(moviesRepository).getTopRatedSeries()
         assertNotNull(topRatedSeriesEntity)
         assertEquals(20, topRatedSeriesEntity?.size)

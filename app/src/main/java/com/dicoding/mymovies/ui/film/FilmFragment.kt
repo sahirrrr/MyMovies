@@ -1,19 +1,18 @@
 package com.dicoding.mymovies.ui.film
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.mymovies.databinding.FragmentFilmBinding
-import com.dicoding.mymovies.ui.detail.DetailFilmActivity
 import com.dicoding.mymovies.ui.film.adapter.PopularFilmAdapter
 import com.dicoding.mymovies.ui.film.adapter.UpcomingFilmAdapter
 import com.dicoding.mymovies.viewmodel.ViewModelFactory
-
+import com.dicoding.mymovies.vo.Status
 
 class FilmFragment : Fragment() {
 
@@ -39,9 +38,18 @@ class FilmFragment : Fragment() {
 
         binding.progressBar.visibility = View.VISIBLE
         viewModel.getUpcomingFilm().observe(viewLifecycleOwner, { upcomingFilm ->
-            binding.progressBar.visibility = View.GONE
-            upcomingFilmAdapter.setMovies(upcomingFilm)
-            upcomingFilmAdapter.notifyDataSetChanged()
+            when (upcomingFilm.status) {
+                Status.SUCCESS -> {
+                    binding.progressBar.visibility = View.GONE
+                    upcomingFilmAdapter.submitList(upcomingFilm.data)
+                    upcomingFilmAdapter.notifyDataSetChanged()
+                }
+                Status.ERROR -> {
+                    binding.progressBar.visibility = View.GONE
+                    Toast.makeText(requireContext(), "Error network issue", Toast.LENGTH_SHORT).show()
+                }
+                Status.LOADING -> binding.progressBar.visibility = View.VISIBLE
+            }
         })
 
         with(binding.rvUpcomingFilm) {
@@ -49,34 +57,30 @@ class FilmFragment : Fragment() {
             setHasFixedSize(true)
             adapter = upcomingFilmAdapter
         }
-
-        upcomingFilmAdapter.onClickItem = {
-            val intent = Intent(activity, DetailFilmActivity::class.java)
-            intent.putExtra(DetailFilmActivity.EXTRA_FILM, it.id)
-            startActivity(intent)
-        }
     }
 
     private fun popularMovies(viewModel: FilmViewModel) {
         val filmAdapter = PopularFilmAdapter()
 
-        binding.progressBar.visibility = View.VISIBLE
-        viewModel.getPopularFilm().observe(viewLifecycleOwner, { film ->
-            binding.progressBar.visibility = View.GONE
-            filmAdapter.setMovies(film)
-            filmAdapter.notifyDataSetChanged()
+        viewModel.getPopularFilm().observe(viewLifecycleOwner, { popularFilm ->
+            when (popularFilm.status) {
+                Status.SUCCESS -> {
+                    binding.progressBar.visibility = View.GONE
+                    filmAdapter.submitList(popularFilm.data)
+                    filmAdapter.notifyDataSetChanged()
+                }
+                Status.ERROR -> {
+                    binding.progressBar.visibility = View.GONE
+                    Toast.makeText(requireContext(), "Error network issue", Toast.LENGTH_SHORT).show()
+                }
+                Status.LOADING -> binding.progressBar.visibility = View.VISIBLE
+            }
         })
 
         with(binding.rvFilm) {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             setHasFixedSize(true)
             adapter = filmAdapter
-        }
-
-        filmAdapter.onClickItem = {
-            val intent = Intent(activity, DetailFilmActivity::class.java)
-            intent.putExtra(DetailFilmActivity.EXTRA_FILM, it.id)
-            startActivity(intent)
         }
     }
 }

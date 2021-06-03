@@ -1,21 +1,23 @@
 package com.dicoding.mymovies.ui.detail
 
 import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
-import android.widget.ImageView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.dicoding.mymovies.BuildConfig
 import com.dicoding.mymovies.R
-import com.dicoding.mymovies.data.source.remote.response.DetailSeriesResponse
+import com.dicoding.mymovies.data.source.local.entity.DetailSeriesEntity
 import com.dicoding.mymovies.databinding.ActivityDetailSeriesBinding
 import com.dicoding.mymovies.viewmodel.ViewModelFactory
+import com.dicoding.mymovies.vo.Status
 import java.util.*
 
-class DetailSeriesActivity : AppCompatActivity(), View.OnClickListener {
+class DetailSeriesActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_SERIES = "extra_series"
@@ -29,8 +31,8 @@ class DetailSeriesActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(binding.root)
 
         window.setFlags(
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
 
         val factory = ViewModelFactory.getInstance(this)
         val viewModel = ViewModelProvider(this, factory)[DetailViewModel::class.java]
@@ -38,43 +40,61 @@ class DetailSeriesActivity : AppCompatActivity(), View.OnClickListener {
         val extras = intent.extras
         if (extras != null) {
             val tvId = extras.getInt(EXTRA_SERIES)
-            val imagesUrl = "https://image.tmdb.org/t/p/original/"
-            binding.progressBar.visibility = View.VISIBLE
-            viewModel.setSelectedSeries(tvId.toString())
-            viewModel.getDetailSeries().observe(this, { series ->
-                populateDetailFilm(series, imagesUrl)
-                binding.progressBar.visibility = View.GONE
-            })
+            viewModel.setSelectedSeries(tvId)
+        }
+        viewModel.detailSeries.observe(this, { series ->
+            if (series.data != null) {
+                when (series.status) {
+                    Status.SUCCESS -> {
+                        populateDetailFilm(series.data)
+                        binding.progressBar.visibility = View.GONE
+                        val state = series.data.favorite
+                        setFavorite(state)
+                    }
+                    Status.ERROR -> {
+                        binding.progressBar.visibility = View.GONE
+                        Toast.makeText(this, "Error network issue", Toast.LENGTH_SHORT).show()
+                    }
+                    Status.LOADING -> binding.progressBar.visibility = View.VISIBLE
+                }
+            }
+        })
+
+        binding.iconBack.setOnClickListener {
+            finish()
         }
 
-        val returnDetail: ImageView = binding.iconBack
-        returnDetail.setOnClickListener(this)
+        binding.iconBookmark.setOnClickListener {
+            viewModel.setFavoriteSeries()
+        }
+    }
+
+    private fun setFavorite(state: Boolean?) {
+        if (state == true) {
+            binding.iconBookmark.setImageResource(R.drawable.ic_bookmark_filled)
+        } else {
+            binding.iconBookmark.setImageResource(R.drawable.ic_bookmark)
+        }
     }
 
     @SuppressLint("SetTextI18n")
-    private fun populateDetailFilm(film: DetailSeriesResponse, imagesUrl: String) {
-        binding.tvItemTitleSeries.text = film.name
-        binding.tvItemLanguageSeries.text = "(${film.originalLanguage.toUpperCase(Locale.getDefault())})"
-        binding.tvItemReleaseDateSeries.text = film.firstAirDate
-        binding.tvItemOverviewSeries.text = film.overview
-        binding.tvItemSeasonSeries.text = "S${film.numberOfSeasons}"
-        binding.tvItemEpisodeSeries.text = "E${film.numberOfEpisodes}"
-        binding.tvItemPopularitySeries.text = "${(film.voteAverage * 10).toInt()}%"
+    private fun populateDetailFilm(series: DetailSeriesEntity) {
+        binding.tvItemTitleSeries.text = series.name
+        binding.tvItemLanguageSeries.text = "(${series.originalLanguage.toUpperCase(Locale.getDefault())})"
+        binding.tvItemReleaseDateSeries.text = series.firstAirDate
+        binding.tvItemOverviewSeries.text = series.overview
+        binding.tvItemSeasonSeries.text = "S${series.numberOfSeasons}"
+        binding.tvItemEpisodeSeries.text = "E${series.numberOfEpisodes}"
+        binding.tvItemPopularitySeries.text = "${(series.voteAverage * 10).toInt()}%"
 
         Glide.with(this)
-                .load(imagesUrl + film.posterPath)
+                .load(BuildConfig.IMAGE_ADDRESS + series.posterPath)
                 .apply(RequestOptions.placeholderOf(R.drawable.ic_loading))
                 .into(binding.imgPosterSeries)
 
         Glide.with(this)
-                .load(imagesUrl + film.backdropPath)
+                .load(BuildConfig.IMAGE_ADDRESS + series.backdropPath)
                 .apply(RequestOptions.placeholderOf(R.drawable.ic_loading))
                 .into(binding.imgBackDropSeries)
-    }
-
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.icon_back -> finish()
-        }
     }
 }

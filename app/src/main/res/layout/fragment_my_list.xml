@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#FAFAFA"
     tools:context=".ui.mylist.MyListFragment">
-
+<!--
     <ImageView
         android:id="@+id/img_empty_state"
         android:layout_width="wrap_content"
@@ -44,5 +44,50 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_empty_state_title"/>
+-->
+    <TextView
+        android:id="@+id/tv_film_favorite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:fontFamily="@font/prompt_bold"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:text="@string/favorite_film"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_favorite_film"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="#FAFAFA"
+        tools:listitem="@layout/item_row_favorite"
+        app:layout_constraintTop_toBottomOf="@id/tv_film_favorite"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_film_series"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:fontFamily="@font/prompt_bold"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:text="@string/favorite_series"
+        app:layout_constraintTop_toBottomOf="@id/rv_favorite_film"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_favorite_series"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="#FAFAFA"
+        tools:listitem="@layout/item_row_favorite"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_film_series"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
