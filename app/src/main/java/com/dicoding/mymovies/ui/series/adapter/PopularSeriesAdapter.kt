@@ -11,18 +11,18 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.dicoding.mymovies.BuildConfig
 import com.dicoding.mymovies.R
-import com.dicoding.mymovies.data.source.local.entity.PopularSeriesEntity
+import com.dicoding.mymovies.core.domain.model.PopularSeriesModel
 import com.dicoding.mymovies.databinding.ItemRowSeriesBinding
 import com.dicoding.mymovies.ui.detail.DetailSeriesActivity
 
-class PopularSeriesAdapter: PagedListAdapter<PopularSeriesEntity ,PopularSeriesAdapter.PopularSeriesViewHolder>(DIFF_CALLBACK) {
+class PopularSeriesAdapter: PagedListAdapter<PopularSeriesModel,PopularSeriesAdapter.PopularSeriesViewHolder>(DIFF_CALLBACK) {
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<PopularSeriesEntity>() {
-            override fun areItemsTheSame(oldItem: PopularSeriesEntity, newItem: PopularSeriesEntity): Boolean {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<PopularSeriesModel>() {
+            override fun areItemsTheSame(oldItem: PopularSeriesModel, newItem: PopularSeriesModel): Boolean {
                 return oldItem.id == newItem.id
             }
-            override fun areContentsTheSame(oldItem: PopularSeriesEntity, newItem: PopularSeriesEntity): Boolean {
+            override fun areContentsTheSame(oldItem: PopularSeriesModel, newItem: PopularSeriesModel): Boolean {
                 return oldItem == newItem
             }
         }
@@ -42,7 +42,7 @@ class PopularSeriesAdapter: PagedListAdapter<PopularSeriesEntity ,PopularSeriesA
 
     @SuppressLint("SetTextI18n")
     inner class PopularSeriesViewHolder(private val binding: ItemRowSeriesBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(series: PopularSeriesEntity) {
+        fun bind(series: PopularSeriesModel) {
             with(binding) {
                 tvItemTitleSeries.text = series.name
                 tvItemFirstReleaseSeries.text = series.firstAirDate

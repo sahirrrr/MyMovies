@@ -4,9 +4,9 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
-import com.dicoding.mymovies.data.MoviesRepository
-import com.dicoding.mymovies.data.source.local.entity.PopularSeriesEntity
-import com.dicoding.mymovies.data.source.local.entity.TopRatedSeriesEntity
+import com.dicoding.mymovies.core.data.MoviesRepository
+import com.dicoding.mymovies.core.data.source.local.entity.PopularSeriesEntity
+import com.dicoding.mymovies.core.data.source.local.entity.TopRatedSeriesEntity
 import com.dicoding.mymovies.vo.Resource
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.assertEquals

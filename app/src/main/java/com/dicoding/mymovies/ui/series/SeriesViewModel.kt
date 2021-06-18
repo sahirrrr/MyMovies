@@ -1,15 +1,11 @@
 package com.dicoding.mymovies.ui.series
 
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.ViewModel
-import androidx.paging.PagedList
-import com.dicoding.mymovies.data.MoviesRepository
-import com.dicoding.mymovies.data.source.local.entity.PopularSeriesEntity
-import com.dicoding.mymovies.data.source.local.entity.TopRatedSeriesEntity
-import com.dicoding.mymovies.vo.Resource
+import com.dicoding.mymovies.core.domain.usecase.MoviesUseCase
 
-class SeriesViewModel(private val moviesRepository: MoviesRepository): ViewModel() {
-    fun getPopularSeries(): LiveData<Resource<PagedList<PopularSeriesEntity>>> = moviesRepository.getPopularSeries()
+class SeriesViewModel(private val moviesUseCase: MoviesUseCase): ViewModel() {
+    fun getPopularSeries() = LiveDataReactiveStreams.fromPublisher(moviesUseCase.getPopularSeries())
 
-    fun getTopRatedSeries(): LiveData<Resource<PagedList<TopRatedSeriesEntity>>> = moviesRepository.getTopRatedSeries()
+    fun getTopRatedSeries() = LiveDataReactiveStreams.fromPublisher(moviesUseCase.getTopRatedSeries())
 }

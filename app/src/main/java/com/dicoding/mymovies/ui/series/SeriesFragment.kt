@@ -6,17 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.mymovies.databinding.FragmentSeriesBinding
 import com.dicoding.mymovies.ui.series.adapter.PopularSeriesAdapter
 import com.dicoding.mymovies.ui.series.adapter.TopRatedSeriesAdapter
-import com.dicoding.mymovies.viewmodel.ViewModelFactory
 import com.dicoding.mymovies.vo.Status
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class SeriesFragment : Fragment() {
 
     private lateinit var binding: FragmentSeriesBinding
+    private val viewModel: SeriesViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentSeriesBinding.inflate(layoutInflater, container, false)
@@ -26,15 +26,13 @@ class SeriesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
-            val factory = ViewModelFactory.getInstance(requireActivity())
-            val viewModel = ViewModelProvider(this, factory)[SeriesViewModel::class.java]
 
-            topRatedSeries(viewModel)
-            popularSeries(viewModel)
+            topRatedSeries()
+            popularSeries()
         }
     }
 
-    private fun topRatedSeries(viewModel: SeriesViewModel) {
+    private fun topRatedSeries() {
         val topRatedSeriesAdapter = TopRatedSeriesAdapter()
 
         binding.progressBar.visibility = View.VISIBLE
@@ -60,7 +58,7 @@ class SeriesFragment : Fragment() {
         }
     }
 
-    private fun popularSeries(viewModel: SeriesViewModel) {
+    private fun popularSeries() {
         val popularSeriesAdapter = PopularSeriesAdapter()
 
         binding.progressBar.visibility = View.VISIBLE

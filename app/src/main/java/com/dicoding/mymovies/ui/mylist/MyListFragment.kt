@@ -5,16 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.mymovies.databinding.FragmentMyListBinding
 import com.dicoding.mymovies.ui.mylist.adapter.MyListFilmAdapter
 import com.dicoding.mymovies.ui.mylist.adapter.MyListSeriesAdapter
-import com.dicoding.mymovies.viewmodel.ViewModelFactory
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class MyListFragment : Fragment() {
 
     private lateinit var binding: FragmentMyListBinding
+    private val viewModel: MyListViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentMyListBinding.inflate(layoutInflater, container, false)
@@ -24,15 +24,11 @@ class MyListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val factory = ViewModelFactory.getInstance(requireActivity())
-        val viewModel = ViewModelProvider(this, factory)[MyListViewModel::class.java]
-
-        favoriteFilm(viewModel)
-        favoriteSeries(viewModel)
-
+        favoriteFilm()
+        favoriteSeries()
     }
 
-    private fun favoriteFilm(viewModel: MyListViewModel) {
+    private fun favoriteFilm() {
         val myListFilmAdapter = MyListFilmAdapter()
         viewModel.getFavoriteFilm().observe(viewLifecycleOwner, { favoriteFilm ->
             myListFilmAdapter.submitList(favoriteFilm)
@@ -46,7 +42,7 @@ class MyListFragment : Fragment() {
         }
     }
 
-    private fun favoriteSeries(viewModel: MyListViewModel) {
+    private fun favoriteSeries() {
         val myListSeriesAdapter = MyListSeriesAdapter()
         viewModel.getFavoriteSeries().observe(viewLifecycleOwner, { favoriteSeries ->
             myListSeriesAdapter.submitList(favoriteSeries)

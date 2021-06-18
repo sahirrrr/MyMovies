@@ -3,10 +3,10 @@ package com.dicoding.mymovies.ui.detail
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.dicoding.mymovies.data.MoviesRepository
-import com.dicoding.mymovies.data.source.local.entity.DetailFilmEntity
-import com.dicoding.mymovies.data.source.local.entity.DetailSeriesEntity
-import com.dicoding.mymovies.utils.DataMovies
+import com.dicoding.mymovies.core.data.MoviesRepository
+import com.dicoding.mymovies.core.data.source.local.entity.DetailFilmEntity
+import com.dicoding.mymovies.core.data.source.local.entity.DetailSeriesEntity
+import com.dicoding.mymovies.core.utils.DataMovies
 import com.dicoding.mymovies.vo.Resource
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Before

@@ -10,18 +10,18 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.dicoding.mymovies.BuildConfig
 import com.dicoding.mymovies.R
-import com.dicoding.mymovies.data.source.local.entity.DetailSeriesEntity
+import com.dicoding.mymovies.core.domain.model.DetailSeriesModel
 import com.dicoding.mymovies.databinding.ItemRowFavoriteBinding
 import com.dicoding.mymovies.ui.detail.DetailSeriesActivity
 
-class MyListSeriesAdapter: PagedListAdapter<DetailSeriesEntity, MyListSeriesAdapter.FavoriteSeriesViewHolder>(DIFF_CALLBACK) {
+class MyListSeriesAdapter: PagedListAdapter<DetailSeriesModel, MyListSeriesAdapter.FavoriteSeriesViewHolder>(DIFF_CALLBACK) {
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<DetailSeriesEntity>() {
-            override fun areItemsTheSame(oldItem: DetailSeriesEntity, newItem: DetailSeriesEntity): Boolean {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<DetailSeriesModel>() {
+            override fun areItemsTheSame(oldItem: DetailSeriesModel, newItem: DetailSeriesModel): Boolean {
                 return oldItem.id == newItem.id
             }
-            override fun areContentsTheSame(oldItem: DetailSeriesEntity, newItem: DetailSeriesEntity): Boolean {
+            override fun areContentsTheSame(oldItem: DetailSeriesModel, newItem: DetailSeriesModel): Boolean {
                 return oldItem == newItem
             }
         }
@@ -40,7 +40,7 @@ class MyListSeriesAdapter: PagedListAdapter<DetailSeriesEntity, MyListSeriesAdap
     }
 
     inner class FavoriteSeriesViewHolder(private val binding: ItemRowFavoriteBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(favoriteSeries: DetailSeriesEntity) {
+        fun bind(favoriteSeries: DetailSeriesModel) {
             with(binding) {
                 tvItemTitleFilm.text = favoriteSeries.name
                 itemView.setOnClickListener {

@@ -10,18 +10,18 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.dicoding.mymovies.BuildConfig
 import com.dicoding.mymovies.R
-import com.dicoding.mymovies.data.source.local.entity.UpcomingFilmEntity
+import com.dicoding.mymovies.core.domain.model.UpcomingFilmModel
 import com.dicoding.mymovies.databinding.ItemRowUpcomingFilmBinding
 import com.dicoding.mymovies.ui.detail.DetailFilmActivity
 
-class UpcomingFilmAdapter: PagedListAdapter<UpcomingFilmEntity ,UpcomingFilmAdapter.UpcomingFilmViewHolder>(DIFF_CALLBACK) {
+class UpcomingFilmAdapter: PagedListAdapter<UpcomingFilmModel ,UpcomingFilmAdapter.UpcomingFilmViewHolder>(DIFF_CALLBACK) {
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<UpcomingFilmEntity>() {
-            override fun areItemsTheSame(oldItem: UpcomingFilmEntity, newItem: UpcomingFilmEntity): Boolean {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<UpcomingFilmModel>() {
+            override fun areItemsTheSame(oldItem: UpcomingFilmModel, newItem: UpcomingFilmModel): Boolean {
                 return oldItem.id == newItem.id
             }
-            override fun areContentsTheSame(oldItem: UpcomingFilmEntity, newItem: UpcomingFilmEntity): Boolean {
+            override fun areContentsTheSame(oldItem: UpcomingFilmModel, newItem: UpcomingFilmModel): Boolean {
                 return oldItem == newItem
             }
         }
@@ -40,7 +40,7 @@ class UpcomingFilmAdapter: PagedListAdapter<UpcomingFilmEntity ,UpcomingFilmAdap
     }
 
     inner class UpcomingFilmViewHolder(private val binding: ItemRowUpcomingFilmBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(upcomingFilm: UpcomingFilmEntity) {
+        fun bind(upcomingFilm: UpcomingFilmModel) {
             with(binding) {
                 tvItemTitleFilm.text = upcomingFilm.title
                 itemView.setOnClickListener {

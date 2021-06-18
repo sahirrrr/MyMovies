@@ -4,9 +4,9 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
-import com.dicoding.mymovies.data.MoviesRepository
-import com.dicoding.mymovies.data.source.local.entity.DetailFilmEntity
-import com.dicoding.mymovies.data.source.local.entity.DetailSeriesEntity
+import com.dicoding.mymovies.core.data.MoviesRepository
+import com.dicoding.mymovies.core.data.source.local.entity.DetailFilmEntity
+import com.dicoding.mymovies.core.data.source.local.entity.DetailSeriesEntity
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before

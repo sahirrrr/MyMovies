@@ -6,15 +6,14 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.dicoding.mymovies.BuildConfig
 import com.dicoding.mymovies.R
-import com.dicoding.mymovies.data.source.local.entity.DetailSeriesEntity
+import com.dicoding.mymovies.core.domain.model.DetailSeriesModel
 import com.dicoding.mymovies.databinding.ActivityDetailSeriesBinding
-import com.dicoding.mymovies.viewmodel.ViewModelFactory
 import com.dicoding.mymovies.vo.Status
+import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
 
 class DetailSeriesActivity : AppCompatActivity() {
@@ -24,6 +23,8 @@ class DetailSeriesActivity : AppCompatActivity() {
     }
 
     private lateinit var binding: ActivityDetailSeriesBinding
+    private val viewModel: DetailViewModel by viewModel()
+    private var state = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,38 +35,28 @@ class DetailSeriesActivity : AppCompatActivity() {
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
 
-        val factory = ViewModelFactory.getInstance(this)
-        val viewModel = ViewModelProvider(this, factory)[DetailViewModel::class.java]
-
         val extras = intent.extras
         if (extras != null) {
             val tvId = extras.getInt(EXTRA_SERIES)
-            viewModel.setSelectedSeries(tvId)
-        }
-        viewModel.detailSeries.observe(this, { series ->
-            if (series.data != null) {
-                when (series.status) {
-                    Status.SUCCESS -> {
-                        populateDetailFilm(series.data)
-                        binding.progressBar.visibility = View.GONE
-                        val state = series.data.favorite
-                        setFavorite(state)
+            viewModel.getDetailSeries(tvId).observe(this, { series ->
+                if (series.data != null) {
+                    when (series.status) {
+                        Status.SUCCESS -> {
+                            binding.progressBar.visibility = View.GONE
+                            populateDetailFilm(series.data)
+                        }
+                        Status.ERROR -> {
+                            binding.progressBar.visibility = View.GONE
+                            Toast.makeText(this, "Error network issue", Toast.LENGTH_SHORT).show()
+                        }
+                        Status.LOADING -> binding.progressBar.visibility = View.VISIBLE
                     }
-                    Status.ERROR -> {
-                        binding.progressBar.visibility = View.GONE
-                        Toast.makeText(this, "Error network issue", Toast.LENGTH_SHORT).show()
-                    }
-                    Status.LOADING -> binding.progressBar.visibility = View.VISIBLE
                 }
-            }
-        })
+            })
+        }
 
         binding.iconBack.setOnClickListener {
             finish()
-        }
-
-        binding.iconBookmark.setOnClickListener {
-            viewModel.setFavoriteSeries()
         }
     }
 
@@ -78,7 +69,7 @@ class DetailSeriesActivity : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun populateDetailFilm(series: DetailSeriesEntity) {
+    private fun populateDetailFilm(series: DetailSeriesModel) {
         binding.tvItemTitleSeries.text = series.name
         binding.tvItemLanguageSeries.text = "(${series.originalLanguage.toUpperCase(Locale.getDefault())})"
         binding.tvItemReleaseDateSeries.text = series.firstAirDate
@@ -96,5 +87,13 @@ class DetailSeriesActivity : AppCompatActivity() {
                 .load(BuildConfig.IMAGE_ADDRESS + series.backdropPath)
                 .apply(RequestOptions.placeholderOf(R.drawable.ic_loading))
                 .into(binding.imgBackDropSeries)
+
+        state = series.favorite
+        setFavorite(state)
+        binding.iconBookmark.setOnClickListener {
+            state = !state
+            viewModel.setFavoriteSeries(series, state)
+            setFavorite(state)
+        }
     }
 }

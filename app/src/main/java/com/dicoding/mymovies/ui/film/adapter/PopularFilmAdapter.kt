@@ -11,18 +11,18 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.dicoding.mymovies.BuildConfig
 import com.dicoding.mymovies.R
-import com.dicoding.mymovies.data.source.local.entity.PopularFilmEntity
+import com.dicoding.mymovies.core.domain.model.PopularFilmModel
 import com.dicoding.mymovies.databinding.ItemRowPopularFilmBinding
 import com.dicoding.mymovies.ui.detail.DetailFilmActivity
 
-class PopularFilmAdapter: PagedListAdapter<PopularFilmEntity, PopularFilmAdapter.PopularFilmViewHolder>(DIFF_CALLBACK) {
+class PopularFilmAdapter: PagedListAdapter<PopularFilmModel, PopularFilmAdapter.PopularFilmViewHolder>(DIFF_CALLBACK) {
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<PopularFilmEntity>() {
-            override fun areItemsTheSame(oldItem: PopularFilmEntity, newItem: PopularFilmEntity): Boolean {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<PopularFilmModel>() {
+            override fun areItemsTheSame(oldItem: PopularFilmModel, newItem: PopularFilmModel): Boolean {
                 return oldItem.id == newItem.id
             }
-            override fun areContentsTheSame(oldItem: PopularFilmEntity, newItem: PopularFilmEntity): Boolean {
+            override fun areContentsTheSame(oldItem: PopularFilmModel, newItem: PopularFilmModel): Boolean {
                 return oldItem == newItem
             }
         }
@@ -42,7 +42,7 @@ class PopularFilmAdapter: PagedListAdapter<PopularFilmEntity, PopularFilmAdapter
 
     @SuppressLint("SetTextI18n")
     inner class PopularFilmViewHolder(private val binding: ItemRowPopularFilmBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(popularFilm: PopularFilmEntity) {
+        fun bind(popularFilm: PopularFilmModel) {
             with(binding) {
                 tvItemTitleFilm.text = popularFilm.title
                 tvItemReleaseDateFilm.text = popularFilm.releaseDate

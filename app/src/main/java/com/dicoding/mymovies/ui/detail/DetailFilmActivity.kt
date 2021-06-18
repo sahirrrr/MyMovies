@@ -6,15 +6,14 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.dicoding.mymovies.BuildConfig
 import com.dicoding.mymovies.R
-import com.dicoding.mymovies.data.source.local.entity.DetailFilmEntity
+import com.dicoding.mymovies.core.domain.model.DetailFilmModel
 import com.dicoding.mymovies.databinding.ActivityDetailFilmBinding
-import com.dicoding.mymovies.viewmodel.ViewModelFactory
 import com.dicoding.mymovies.vo.Status
+import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
 
 class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
@@ -24,6 +23,8 @@ class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private lateinit var binding: ActivityDetailFilmBinding
+    private val viewModel: DetailViewModel by viewModel()
+    private var state = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,22 +35,15 @@ class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
 
-        val factory = ViewModelFactory.getInstance(this)
-        val viewModel = ViewModelProvider(this, factory)[DetailViewModel::class.java]
-
         val extras = intent.extras
         if (extras != null) {
             val moviesId = extras.getInt(EXTRA_FILM)
-            viewModel.setSelectedFilm(moviesId)
-        }
-            viewModel.detailFilm.observe(this, { film ->
+            viewModel.getDetailFilm(moviesId).observe(this, { film ->
                 if (film.data != null) {
                     when (film.status) {
                         Status.SUCCESS -> {
-                            populateDetailFilm(film.data)
                             binding.progressBar.visibility = View.GONE
-                            val state = film.data.favorite
-                            setFavorite(state)
+                            populateDetailFilm(film.data)
                         }
                         Status.ERROR -> {
                             binding.progressBar.visibility = View.GONE
@@ -59,13 +53,10 @@ class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
                     }
                 }
             })
+        }
 
         binding.iconBack.setOnClickListener {
             finish()
-        }
-
-        binding.iconBookmark.setOnClickListener {
-            viewModel.setFavoriteFilm()
         }
     }
 
@@ -78,7 +69,7 @@ class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun populateDetailFilm(film: DetailFilmEntity) {
+    private fun populateDetailFilm(film: DetailFilmModel) {
         binding.tvItemTitleFilm.text = film.title
         binding.tvItemTagline.text = film.tagLine
         binding.tvItemLanguageFilm.text = "(${film.originalLanguage.toUpperCase(Locale.getDefault())})"
@@ -95,6 +86,14 @@ class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
                 .load(BuildConfig.IMAGE_ADDRESS + film.backdropPath)
                 .apply(RequestOptions.placeholderOf(R.drawable.ic_loading))
                 .into(binding.imgBackDropFilm)
+
+        state = film.favorite
+        setFavorite(state)
+        binding.iconBookmark.setOnClickListener {
+            state = !state
+            viewModel.setFavoriteFilm(film, state)
+            setFavorite(state)
+        }
     }
 
     override fun onClick(v: View?) {

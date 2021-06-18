@@ -6,17 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.mymovies.databinding.FragmentFilmBinding
 import com.dicoding.mymovies.ui.film.adapter.PopularFilmAdapter
 import com.dicoding.mymovies.ui.film.adapter.UpcomingFilmAdapter
-import com.dicoding.mymovies.viewmodel.ViewModelFactory
 import com.dicoding.mymovies.vo.Status
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class FilmFragment : Fragment() {
 
     private lateinit var binding: FragmentFilmBinding
+    private val viewModel: FilmViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentFilmBinding.inflate(layoutInflater, container, false)
@@ -26,8 +26,6 @@ class FilmFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
-            val factory = ViewModelFactory.getInstance(requireActivity())
-            val viewModel = ViewModelProvider(this, factory)[FilmViewModel::class.java]
             upcomingMovies(viewModel)
             popularMovies(viewModel)
         }
